@@ -1,7 +1,6 @@
 exports.up = function(knex) {
     return knex.schema.createTable("student",function(table){
         table.uuid("studenttId").defaultTo(knex.raw("uuid_generate_v4()")).primary();
-
         table.string("fullName");
         table.string("userType");
         table.string("year");
@@ -12,18 +11,6 @@ exports.up = function(knex) {
         table.string("password").notNullable();
         table.timestamps(false, true);
 
-    }).createTable("teacher",function(table){
-        table.uuid("teacherId").defaultTo(knex.raw("uuid_generate_v4()")).primary();
-        ;
-        table.string("fullName");
-       
-        table.string("userType");
-          
-        table.string("email").notNullable().unique();
-        table.string("password").notNullable();
-           
-         
-        table.timestamps(false,true);
     })
 };
 
