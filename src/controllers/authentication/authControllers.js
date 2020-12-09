@@ -5,28 +5,25 @@ const {
     unverifiedError,
     loginResponse,
   } = require("../../../global_functions");
-  const Users = require("../../models/ansTableModel");
+  const Admin = require("../../models/adminModel");
+  const Student = require("../../models/studentModel");
+  const Teacher = require("../../models/teacherModel");
+  
   const validator = require("validator");
   const bcrypt = require("bcrypt");
   const jwt = require("jsonwebtoken");
   
+
   const SignUp = async (req, res) => {
     console.log(req.body);
-    let { email, password, accHash,fullName } = req.body;
-   // console.log("mail key", process.env.mailApiKey);
+    if(req.body.userType==="admin")
+    let { email, password, userType,institute } = req.body;
   
-    //Default profile picture URL
-    const userProfileImage =
-      "https://res.cloudinary.com/hmwv9zdrw/image/upload/v1600970783/user_vopbzk.png";
-  
-  
-     
-      //email and password validation before inserting user
     if (!validator.isEmail(email || ""))
       return badRequestError(res, "Enter a valid email address");
     if (password === "") return badRequestError(res, "password can not be empty");
   
-    let [error, result] = await to(Users.query().where("email", email).first());
+    let [error, result] = await to(Admin.query().where("email", email).first());
     if (error) console.log(error);
     if (result) {
       console.log(result);
@@ -35,15 +32,10 @@ const {
   
     password = await bcrypt.hash(password, 10); //hashing password on validating email and pass
   
-    //generating time based otp for verification using speakeasy
-    /*let otp = speakeasy.totp({
-      secret: process.env.OTP_SECRET + email,
-      encoding: "base32",
-    });*/
-  
+   
     //inserting user details
     let [err, user_inserted] = await to(
-      Users.query()
+      Admin.query()
         .insert({ email:email, password:password, accHash:accHash, fullName:fullName })
         .returning("*")
     );
