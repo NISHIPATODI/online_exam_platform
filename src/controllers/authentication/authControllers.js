@@ -5,7 +5,7 @@ const {
     unverifiedError,
     loginResponse,
   } = require("../../../global_functions");
-  const Users = require("../../models/userModel");
+  const Users = require("../../models/ansTableModel");
   const validator = require("validator");
   const bcrypt = require("bcrypt");
   const jwt = require("jsonwebtoken");

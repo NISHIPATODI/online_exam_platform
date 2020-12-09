@@ -29,6 +29,15 @@ exports.up = function(knex) {
 
         table.timestamps(false,true);
     })
+
+    .createTable("ansTable",function(table){
+        table.uuid("studentId").references("studentId").inTable("student").onDelete("CASCADE");
+        table.string("quesId").references("quesId").inTable("qPaper").onDelete("CASCADE");
+        table.string("answer");
+          
+         
+        table.timestamps(false,true);
+    })
 };
 
 exports.down = function(knex) {
