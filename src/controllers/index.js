@@ -1,5 +1,7 @@
 const UserAuthController=require("./authentication/authControllers");
 const adminController=require("./admin/adminControllers");
+const studentController=require("./student/studentControl");
+const testController=require("./test/testController");
 
 //const UserSearchController=require("./users/UserSearch");
 //const HostLocations=require("./hosts/hostLocations");
@@ -7,7 +9,9 @@ const adminController=require("./admin/adminControllers");
 
 module.exports={
     UserAuthController,
-    adminController
+    adminController,
+    studentController,
+    testController
    // UserSearchController,
     //HostLocations
 }
