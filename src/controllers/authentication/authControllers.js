@@ -16,8 +16,8 @@ const {
 
   const SignUp = async (req, res) => {
     console.log(req.body);
-    if(req.body.userType==="admin")
-    let { email, password, userType,institute } = req.body;
+    if(req.body.userType==="admin"){
+    let { email, password, userType,institute,fullName } = req.body;
   
     if (!validator.isEmail(email || ""))
       return badRequestError(res, "Enter a valid email address");
@@ -36,17 +36,47 @@ const {
     //inserting user details
     let [err, user_inserted] = await to(
       Admin.query()
-        .insert({ email:email, password:password, accHash:accHash, fullName:fullName })
+        .insert({ email:email, password:password, userType:userType, fullName:fullName,institue:institute })
         .returning("*")
     );
     if (err) badRequestError(res, "unable to insert user");
   
-    //sending token through mailgun api
-    /*sendMail(email, `OTP ${otp}`);*/
-    //returning response on insertion
     delete user_inserted.password;
     console.log("USER's detail ", user_inserted);
     return okResponse(res, "user inserted successfully");
+    }
+else{
+    if(req.body.userType==="student"||req.body.userType==="teacher"){
+      let { email, password, userType,year,branch,section,fullName } = req.body;
+    
+      if (!validator.isEmail(email || ""))
+        return badRequestError(res, "Enter a valid email address");
+      if (password === "") return badRequestError(res, "password can not be empty");
+    
+      let [error, result] = await to(  Student.query().where("email", email).first());
+      if (error) console.log(error);
+      if (result) {
+        console.log(result);
+        return badRequestError(res, " email already exists");
+      }
+    
+      password = await bcrypt.hash(password, 10); //hashing password on validating email and pass
+    
+     
+      //inserting user details
+      let [err, user_inserted] = await to(
+       Student.query()
+          .insert({ email:email, password:password, userType:userType, fullName:fullName,year:year,branch:branch,section:section })
+          .returning("*")
+      );
+      if (err) badRequestError(res, "unable to insert user");
+    
+      delete user_inserted.password;
+      console.log("USER's detail ", user_inserted);
+      return okResponse(res, "user inserted successfully");
+      }
+    }
+      
   };
   
  
@@ -62,20 +92,20 @@ const {
       return badRequestError(res, "Enter a valid email address ");
     if (password === "") return unverifiedError(res, "password field is empty");
     let [incorrect, user_returned] = await to(
-      Users.query().findOne("email", email).throwIfNotFound()
+      Student.query().findOne("email", email).throwIfNotFound()
     );
   console.log("user_returned  "+user_returned.accHash)
     if (incorrect) return badRequestError(res, "email does not exists");
   
     //Checking whether email is verified
-    if (user_returned.email === email) {
       //checking password
       if (await bcrypt.compare(password, user_returned.password)) {
         //Generating JWT token on correct password for USER type
   
-        
+        if (user_returned.userType === "admin") {
+    
          access_token = await jwt.sign(
-          { email, id: user_returned.id,accHash:user_returned.accHash },
+          { email, adminId: user_returned.adminId,userType:user_returned.userType },
           process.env.JWT_USER_SECRET,
           {
             expiresIn: "24h",
@@ -88,6 +118,23 @@ const {
         delete user_returned.password;
         return okResponse(res,user_returned,"loged in successfully");
       }
+
+      else  {
+    console.log(user_returned);
+        access_token = await jwt.sign(
+         { email, studentId: user_returned.studentId,userType:user_returned.userType },
+         process.env.JWT_USER_SECRET,
+         {
+           expiresIn: "24h",
+         }
+       );
+            
+       res.setHeader("Authorization", access_token);
+       res.setHeader("access-control-expose-headers", "authorization");
+ 
+       delete user_returned.password;
+       return okResponse(res,user_returned,"loged in successfully");
+     }
       //Error returned when password is invalid
       return unverifiedError(res, "invalid password");
     }
@@ -103,7 +150,7 @@ const {
       return badRequestError(res, "password field is empty");
   
     let [error, user_detail] = await to(
-      Users.query()
+      Student.query()
         .findOne("email", email)
         .returning("password")
         .throwIfNotFound()
@@ -130,8 +177,8 @@ const {
   //ignore only for testing
   
   const Delete = async (req, res) => {
-    let {id}=req.body;
-    let [error, deleted] = await to(Users.query().where("id",id).delete().throwIfNotFound());
+    let {fullName,email}=req.body;
+    let [error, deleted] = await to(Student.query().where("fullname",fullName).andWhere("email",email).delete().throwIfNotFound());
     if (error) badRequestError(res, "unable to delete");
     okResponse(res, deleted, "delete successfull");
   };

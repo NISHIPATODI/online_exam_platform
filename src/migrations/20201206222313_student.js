@@ -1,6 +1,6 @@
 exports.up = function(knex) {
     return knex.schema.createTable("student",function(table){
-        table.uuid("studenttId").defaultTo(knex.raw("uuid_generate_v4()")).primary();
+        table.uuid("studentId").defaultTo(knex.raw("uuid_generate_v4()")).primary();
         table.string("fullName");
         table.string("userType");
         table.string("year");

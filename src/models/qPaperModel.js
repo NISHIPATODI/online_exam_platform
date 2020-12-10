@@ -15,7 +15,7 @@ class QPaper extends Model {
     
     return{
       QuestionOption:{
-        relation:Model.HasManyRelation,
+        relation:Model.HasOneRelation,
         modelClass:QOption,
         join:{
           from:"qPaper.quesId",

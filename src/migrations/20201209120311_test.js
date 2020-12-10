@@ -32,7 +32,7 @@ exports.up = function(knex) {
 
     .createTable("ansTable",function(table){
         table.uuid("studentId").references("studentId").inTable("student").onDelete("CASCADE");
-        table.string("quesId").references("quesId").inTable("qPaper").onDelete("CASCADE");
+        table.uuid("quesId").references("quesId").inTable("qPaper").onDelete("CASCADE");
         table.string("answer");
           
          
@@ -41,5 +41,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-    return knex.schema.dropTableIfExists("post");
+    return knex.schema.dropTableIfExists("ansTable");
 };
