@@ -14,8 +14,8 @@ module.exports = {
     },
     connection: {
       host: "localhost",
-      user: "postgres",
-      password: "root",
+      user: "root",
+      password:"root",
       database: "E-exam_platform"           // Create Database with same name on your local machine in postgres or change the name these with your database name.
     }
   },

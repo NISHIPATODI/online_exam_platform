@@ -92,9 +92,9 @@ else{
       return badRequestError(res, "Enter a valid email address ");
     if (password === "") return unverifiedError(res, "password field is empty");
     let [incorrect, user_returned] = await to(
-      Student.query().findOne("email", email).throwIfNotFound()
+      Admin.query().findOne("email", email).throwIfNotFound()
     );
-  console.log("user_returned  "+user_returned.accHash)
+  console.log("user_returned  "+user_returned)
     if (incorrect) return badRequestError(res, "email does not exists");
   
     //Checking whether email is verified
@@ -142,6 +142,47 @@ else{
 }
 
 
+const LoginStud = async (req, res) => {
+  let access_token;
+  console.log(req.body);
+  let { email, password } = req.body;
+  if (!validator.isEmail(email || ""))
+    return badRequestError(res, "Enter a valid email address ");
+  if (password === "") return unverifiedError(res, "password field is empty");
+  let [incorrect, user_returned] = await to(
+    Student.query().findOne("email", email).throwIfNotFound()
+  );
+console.log("user_returned  "+user_returned)
+  if (incorrect) return badRequestError(res, "email does not exists");
+
+  //Checking whether email is verified
+    //checking password
+    if (await bcrypt.compare(password, user_returned.password)) {
+      //Generating JWT token on correct password for USER type
+
+     
+   // else  {
+  console.log(user_returned);
+      access_token = await jwt.sign(
+       { email, studentId: user_returned.studentId,userType:user_returned.userType },
+       process.env.JWT_USER_SECRET,
+       {
+         expiresIn: "24h",
+       }
+     );
+          
+     res.setHeader("Authorization", access_token);
+     res.setHeader("access-control-expose-headers", "authorization");
+
+     delete user_returned.password;
+     return okResponse(res,user_returned,"loged in successfully");
+  // }
+    //Error returned when password is invalid
+   // return unverifiedError(res, "invalid password");
+  }
+
+}
+
   // Change user password
   const ChangePassword = async (req, res) => {
     let { new_password, old_password,email } = req.body;
@@ -188,5 +229,6 @@ else{
     Delete,
     Login,
     ChangePassword,
+    LoginStud
       };
   
