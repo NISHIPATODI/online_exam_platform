@@ -19,6 +19,7 @@ const {
         Student.query().select().where("year",year).andWhere("branch",branch).andWhere("section",section)
         .returning("*")
       );
+      
       if (err) badRequestError(res, "unable to fetch user");
     
       //delete user_inserted.password;
@@ -35,15 +36,15 @@ const {
         }
       });
       let mail="sandeepsinghgour0@gmail.com";
-      console.log("USER's detail inside mail function ", user_inserted[0].email);
+      console.log("USER's detail inside mail function ", user_inserted.length);
      
-      //let pwd=user_inserted.password
-     // console.log("USER's detail indide mail function ",pwd);
-     for(let i=0;i<2;i++){
+
+
+          for(let i=0;i<user_inserted.length;i++){
       var mailOptions = {
         from: "nishi.patodi@gmail.com",
         to: user_inserted[i].email,
-        subject: 'Sending Email using Node.js',
+        subject: 'Link For Test',
         text: `  emailId is ${user_inserted[i].email } password is ${user_inserted[i].password} /n}is `
       };
       
