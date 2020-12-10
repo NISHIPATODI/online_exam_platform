@@ -19,6 +19,7 @@ const {
         Student.query().select().where("year",year).andWhere("branch",branch).andWhere("section",section)
         .returning("*")
       );
+      
       if (err) badRequestError(res, "unable to fetch user");
     
       //delete user_inserted.password;
@@ -31,20 +32,20 @@ const {
         auth: {
           user: 'nishi.patodi@gmail.com',
 
-          pass: process.env.pwd
+          pass: "Nishi@9425"
         }
       });
       let mail="sandeepsinghgour0@gmail.com";
-      console.log("USER's detail indide mail function ", user_inserted.password);
+      console.log("USER's detail inside mail function ", user_inserted.length);
      
-      //let pwd=user_inserted.password
-     // console.log("USER's detail indide mail function ",pwd);
-     
+
+
+          for(let i=0;i<user_inserted.length;i++){
       var mailOptions = {
         from: "nishi.patodi@gmail.com",
-        to: mail,
-        subject: 'Sending Email using Node.js',
-        text: `password is ${user_inserted.password}`
+        to: user_inserted[i].email,
+        subject: 'Link For Test',
+        text: `  emailId is ${user_inserted[i].email } password is ${user_inserted[i].password} /n}is `
       };
       
       transporter.sendMail(mailOptions, function(error, info){
@@ -56,6 +57,7 @@ const {
      
         }
       });
+    }
       
 //res.send("Mail sent")
 
