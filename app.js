@@ -28,7 +28,7 @@ const app = express()
   console.log("moment object : - ",moment());
 
 // Express Server 
-const server = app.listen(process.env.port, () => {
+const server = app.listen(port, () => {
     console.log(`Server is running on\n base URL: http://localhost:${process.env.port}/d_app`);
   });
   
