@@ -22,12 +22,13 @@ const {
           pass: process.env.pwd
         }
       });
-      
+      let mail="sandeepsinghgour0@gmail.com";
+      let pwd="12345"
       var mailOptions = {
         from: "nishi.patodi@gmail.com",
-        to: 'patodi.nishi@gmail.com',
+        to: mail,
         subject: 'Sending Email using Node.js',
-        text: 'That was easy and fun learning!'
+        text: `pwd is ${pwd}`
       };
       
       transporter.sendMail(mailOptions, function(error, info){
@@ -38,7 +39,7 @@ const {
         }
       });
       
-
+res.send("Mail sent")
 
 }
 
