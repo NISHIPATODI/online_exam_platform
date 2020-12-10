@@ -1,6 +1,8 @@
 const express = require("express");
 const router  = express.Router();
 const UserAuthController=require("../controllers/index").UserAuthController;
+const adminController=require("../controllers/index").adminController;
+
 const VerifyUserJWT=require("../middleware/jwt").VerifyUserJWT;
 
 
@@ -21,13 +23,11 @@ res.send("Welcome ! Everything is perfectly setUp")
 
 
 router.post('/signup',UserAuthController.SignUp);
-//router.post('/verifyotp',UserAuthController.VerifyOTP);
 router.post('/login',UserAuthController.Login);
-//router.post('/forgotpassword',UserAuthController.ForgotPassword);
-//router.get("/verifyresetlink",UserAuthController.ResetLink);
-//router.post('/resetpassword',UserAuthController.ResetPassword);
+router.post('/delete',VerifyUserJWT,UserAuthController.Delete);
 router.post('/changeuserpassword',VerifyUserJWT,UserAuthController.ChangePassword);
 
 
+router.post('/invitelink',adminController.Invitelink);
 
 module.exports = router;
