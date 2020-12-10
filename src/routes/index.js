@@ -2,6 +2,8 @@ const express = require("express");
 const router  = express.Router();
 const UserAuthController=require("../controllers/index").UserAuthController;
 const adminController=require("../controllers/index").adminController;
+const studentController=require("../controllers/index").studentController;
+const testController=require("../controllers/index").testController;
 
 const VerifyUserJWT=require("../middleware/jwt").VerifyUserJWT;
 
@@ -34,5 +36,9 @@ router.post('/inviteteacher',adminController.InviteLinkTeach);
 
 router.get('/userdetails/:id',adminController.UserDetails);
 
+
+router.post('/studentAnswer',VerifyUserJWT,studentController.StudentAnswer);
+
+router.post('/testQuestion',testController.TestQuestion);
 
 module.exports = router;
