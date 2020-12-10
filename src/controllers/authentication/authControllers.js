@@ -30,7 +30,7 @@ const {
       return badRequestError(res, " email already exists");
     }
   
-    password = await bcrypt.hash(password, 10); //hashing password on validating email and pass
+   // password = await bcrypt.hash(password, 10); //hashing password on validating email and pass
   
    
     //inserting user details
@@ -60,7 +60,7 @@ else{
         return badRequestError(res, " email already exists");
       }
     
-      password = await bcrypt.hash(password, 10); //hashing password on validating email and pass
+      //password = await bcrypt.hash(password, 10); //hashing password on validating email and pass
     
      
       //inserting user details

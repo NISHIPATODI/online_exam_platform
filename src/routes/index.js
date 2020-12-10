@@ -29,7 +29,9 @@ router.post('/delete',VerifyUserJWT,UserAuthController.Delete);
 router.post('/changeuserpassword',VerifyUserJWT,UserAuthController.ChangePassword);
 
 
-router.post('/invitelink',adminController.InviteLink);
+router.post('/invitestudent',adminController.InviteLinkStud);
+router.post('/inviteteacher',adminController.InviteLinkTeach);
+
 router.get('/userdetails/:id',adminController.UserDetails);
 
 
