@@ -23,11 +23,14 @@ res.send("Welcome ! Everything is perfectly setUp")
 
 
 router.post('/signup',UserAuthController.SignUp);
-router.post('/login',UserAuthController.Login);
+router.post('/loginadmin',UserAuthController.Login);
+router.post('/login',UserAuthController.LoginStud);
 router.post('/delete',VerifyUserJWT,UserAuthController.Delete);
 router.post('/changeuserpassword',VerifyUserJWT,UserAuthController.ChangePassword);
 
 
-router.post('/invitelink',adminController.Invitelink);
+router.post('/invitelink',adminController.InviteLink);
+router.get('/userdetails/:id',adminController.UserDetails);
+
 
 module.exports = router;

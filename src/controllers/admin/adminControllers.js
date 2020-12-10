@@ -10,16 +10,16 @@ const {
   const Teacher = require("../../models/teacherModel");
   var nodemailer = require('nodemailer');
 
-  const Invitelink = async (req, res) => {
+  const InviteLink = async (req, res) => {
     console.log(req.body);
     //if(req.body.userType==="student")
     let { branch,year,section} = req.body;
-
+    //coding_hustlers_vaibhav
     let [err, user_inserted] = await to(
         Student.query().select().where("year",year).andWhere("branch",branch).andWhere("section",section)
         .returning("*")
       );
-      if (err) badRequestError(res, "unable to insert user");
+      if (err) badRequestError(res, "unable to fetch user");
     
       //delete user_inserted.password;
       console.log("USER's detail ", user_inserted);
@@ -61,7 +61,30 @@ const {
 
 }
 
+const UserDetails = async (req, res) => {
+    //console.log(req.body);
+   let userType= req.params.id;
+   console.log(req.params.id);
+  
+    let [err, user_record] = await to(
+        Student.query().select().where("userType",userType)
+        .returning("*")
+      );
+      if (err) badRequestError(res, "unable to fetch records data");
+    
+      //delete user_inserted.password;
+      console.log("USER's detail ", user_record);
+      return okResponse(res, user_record,"user record fetched successfully");
+     
+     // return okResponse(res,"user record fetched successfully");
+     
+  
+}
+
+
+
 module.exports = {
-    Invitelink,
+    InviteLink,
+    UserDetails
 
 }
