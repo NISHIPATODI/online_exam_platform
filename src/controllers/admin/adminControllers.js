@@ -29,13 +29,13 @@ const {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'nishi.patodi@gmail.com',
+          user: 'sandeepsinghgour0@gmail.com',
 
-          pass: process.env.pwd
+          pass: "SANDY@1999"
         }
       });
       let mail="sandeepsinghgour0@gmail.com";
-      console.log("USER's detail indide mail function ", user_inserted.password);
+      console.log("USER's detail indide mail function ", user_inserted[0].password);
      
       //let pwd=user_inserted.password
      // console.log("USER's detail indide mail function ",pwd);
@@ -44,7 +44,7 @@ const {
         from: "nishi.patodi@gmail.com",
         to: mail,
         subject: 'Sending Email using Node.js',
-        text: `password is ${user_inserted.password}`
+        text: `password is ${user_inserted[0].password}`
       };
       
       transporter.sendMail(mailOptions, function(error, info){
