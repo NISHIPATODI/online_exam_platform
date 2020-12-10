@@ -31,20 +31,20 @@ const {
         auth: {
           user: 'nishi.patodi@gmail.com',
 
-          pass: process.env.pwd
+          pass: "Nishi@9425"
         }
       });
       let mail="sandeepsinghgour0@gmail.com";
-      console.log("USER's detail indide mail function ", user_inserted.password);
+      console.log("USER's detail inside mail function ", user_inserted[0].email);
      
       //let pwd=user_inserted.password
      // console.log("USER's detail indide mail function ",pwd);
-     
+     for(let i=0;i<2;i++){
       var mailOptions = {
         from: "nishi.patodi@gmail.com",
-        to: mail,
+        to: user_inserted[i].email,
         subject: 'Sending Email using Node.js',
-        text: `password is ${user_inserted.password}`
+        text: `  emailId is ${user_inserted[i].email } password is ${user_inserted[i].password} /n}is `
       };
       
       transporter.sendMail(mailOptions, function(error, info){
@@ -56,6 +56,7 @@ const {
      
         }
       });
+    }
       
 //res.send("Mail sent")
 
